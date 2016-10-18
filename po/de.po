@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: baalue trunk\n"
 "Report-Msgid-Bugs-To: thorsten.johannvorderbrueggen@t-online.de\n"
-"POT-Creation-Date: 2016-07-21 06:07+0200\n"
+"POT-Creation-Date: 2016-10-18 14:37+0200\n"
 "PO-Revision-Date: 2016-07-20 10:56+0200\n"
 "Last-Translator: tjohann <thorsten.johannvorderbrueggen@t-online.de>\n"
 "Language-Team: German\n"
@@ -52,4 +52,9 @@ msgstr ""
 #: src/main.c:72
 #, c-format
 msgid "ERROR: no valid argument\n"
+msgstr ""
+
+#: lib/libservice.h:124
+#, c-format
+msgid "Your're in %s of %s"
 msgstr ""
