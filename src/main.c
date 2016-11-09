@@ -18,9 +18,12 @@
 
  */
 
-#include "libservice.h"
+#include "common.h"
 
-static char *program_name;
+//static char *program_name;
+
+void
+build_main_window(void);
 
 static void
 __attribute__((noreturn)) usage(int status)
@@ -57,7 +60,7 @@ main(int argc, char *argv[])
 	baa_set_program_name(&program_name, argv[0]);
 
 	int c;
-	while ((c = getopt(argc, argv, "hasf:d:")) != -1) {
+	while ((c = getopt(argc, argv, "hasd:")) != -1) {
 		switch (c) {
 		case 'a':
 			printf("Argument a\n");
@@ -77,11 +80,20 @@ main(int argc, char *argv[])
 	if (atexit(cleanup) != 0)
 		exit(EXIT_FAILURE);
 
+	/*
+         * init gtk stuff
+         */
+        if (!g_thread_supported())
+                g_thread_init(NULL);
 
+        gdk_threads_init();
+        gdk_threads_enter();
 
+        gtk_init(&argc, &argv);
+        build_main_window();
 
-	// only for testing
-	sleep(20);
+	gtk_main();
+        gdk_threads_leave();
 
 	return EXIT_SUCCESS;
 }

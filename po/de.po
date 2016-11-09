@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: baalue trunk\n"
 "Report-Msgid-Bugs-To: thorsten.johannvorderbrueggen@t-online.de\n"
-"POT-Creation-Date: 2016-10-18 19:58+0200\n"
+"POT-Creation-Date: 2016-11-09 10:49+0100\n"
 "PO-Revision-Date: 2016-07-20 10:56+0200\n"
 "Last-Translator: tjohann <thorsten.johannvorderbrueggen@t-online.de>\n"
 "Language-Team: German\n"
@@ -17,44 +17,44 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/main.c:29
+#: src/main.c:32
 #, c-format
 msgid "Usage: %s [options]              \n"
 msgstr ""
 
-#: src/main.c:30
+#: src/main.c:33
 #, c-format
 msgid "Options:                                       \n"
 msgstr ""
 
-#: src/main.c:32
+#: src/main.c:35
 #, c-format
 msgid ""
 "        -h                 show "
 "help                                             \n"
 msgstr ""
 
-#: src/main.c:34
+#: src/main.c:37
 #, c-format
 msgid "        -a                 argument a                      \n"
 msgstr ""
 
-#: src/main.c:36
+#: src/main.c:39
 #, c-format
 msgid "        -s                 argument s  \n"
 msgstr ""
 
-#: src/main.c:46
+#: src/main.c:49
 #, c-format
 msgid "Finalize cleanup -> cheers %s\n"
 msgstr ""
 
-#: src/main.c:72
+#: src/main.c:75
 #, c-format
 msgid "ERROR: no valid argument\n"
 msgstr ""
 
-#: lib/libservice.h:124
+#: lib/libservice.h:125
 #, c-format
 msgid "Your're in %s of %s"
 msgstr ""

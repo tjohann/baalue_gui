@@ -61,6 +61,7 @@ PKG_PROG_PKG_CONFIG
 # Checks for libraries.
 PKG_CHECK_MODULES([LIBBAALUE], [libbaalue])
 PKG_CHECK_MODULES([LIBCONFIG], [libconfig])
+PKG_CHECK_MODULES([LIBGTK], [gtk+-2.0])
 
 AC_CHECK_LIB([pthread], [pthread_create], [], [AC_MSG_ERROR([** Could not find libpthread **])])
 AC_CHECK_LIB([rt], [mq_open], [], [ AC_MSG_ERROR([** Could not find librt **]) ])
