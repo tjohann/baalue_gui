@@ -26,7 +26,57 @@ help(void *args)
 {
 	(void) args;
 
-	write_info_msg(_("--INFO_MSG--: in help"));
+	write_info_msg(_("in help"));
+
+	return NULL;
+}
+
+void *
+search_node(void *args)
+{
+	(void) args;
+
+	write_info_msg(_("in search"));
+
+	return NULL;
+}
+
+void *
+connect_node(void *args)
+{
+	(void) args;
+
+	write_info_msg(_("in connect"));
+
+	return NULL;
+}
+
+void *
+disconnect_node(void *args)
+{
+	(void) args;
+
+	write_info_msg(_("in disconnect"));
+
+	return NULL;
+}
+
+void *
+halt_node(void *args)
+{
+	(void) args;
+
+	write_info_msg(_("in halt"));
+
+	return NULL;
+}
+
+void *
+reboot_node(void *args)
+{
+	(void) args;
+
+	write_info_msg(_("in reboot"));
 
 	return NULL;
 }

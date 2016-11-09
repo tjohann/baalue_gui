@@ -107,8 +107,6 @@ write_to_textfield(const char *message, int log_level)
 {
 	GtkTextIter iter;
 
-	printf("message: %s ... log_level %d\n", message, log_level);
-
 	if (textfield_buffer != NULL) {
 		switch(log_level) {
 		case LOG_INFO:
@@ -158,13 +156,63 @@ help_button(GtkWidget *widget, gpointer data)
 }
 
 static void
+search_button(GtkWidget *widget, gpointer data)
+{
+	(void) widget;
+	(void) data;
+
+	if (!g_thread_create(&search_node, NULL, FALSE, NULL) != 0)
+		write_error_msg(_("could not create the thread"));
+}
+
+static void
+connect_button(GtkWidget *widget, gpointer data)
+{
+	(void) widget;
+	(void) data;
+
+	if (!g_thread_create(&connect_node, NULL, FALSE, NULL) != 0)
+		write_error_msg(_("could not create the thread"));
+}
+
+static void
+disconnect_button(GtkWidget *widget, gpointer data)
+{
+	(void) widget;
+	(void) data;
+
+	if (!g_thread_create(&disconnect_node, NULL, FALSE, NULL) != 0)
+		write_error_msg(_("could not create the thread"));
+}
+
+static void
+halt_button(GtkWidget *widget, gpointer data)
+{
+	(void) widget;
+	(void) data;
+
+	if (!g_thread_create(&halt_node, NULL, FALSE, NULL) != 0)
+		write_error_msg(_("could not create the thread"));
+}
+
+static void
+reboot_button(GtkWidget *widget, gpointer data)
+{
+	(void) widget;
+	(void) data;
+
+	if (!g_thread_create(&reboot_node, NULL, FALSE, NULL) != 0)
+		write_error_msg(_("could not create the thread"));
+}
+
+static void
 build_button_box(void)
 {
 	gtk_container_set_border_width(GTK_CONTAINER(buttonbox), 5);
 
 	/* ---- search */
 	search_b = gtk_button_new_with_label(_("Search for node"));
-//	g_signal_connect(search_b, "clicked", G_CALLBACK(search_node), NULL);
+	g_signal_connect(search_b, "clicked", G_CALLBACK(search_button), NULL);
 	gtk_tooltips_set_tip(tooltips,
 			     search_b,
 			     _("Search for baalue cluster nodes"),
@@ -173,7 +221,7 @@ build_button_box(void)
 
 	/* ---- connect */
 	connect_b = gtk_button_new_with_label(_("Connect to node"));
-//	g_signal_connect(connect_b, "clicked", G_CALLBACK(clone_button), NULL);
+	g_signal_connect(connect_b, "clicked", G_CALLBACK(connect_button), NULL);
 	gtk_tooltips_set_tip(tooltips,
 			     connect_b,
 			     _("Connect to a baalue cluster node"),
@@ -182,7 +230,7 @@ build_button_box(void)
 
 	/* ---- disconnect */
 	disconnect_b = gtk_button_new_with_label(_("Disconnect node"));
-//	g_signal_connect(disconnect_b, "clicked", G_CALLBACK(clone_button), NULL);
+	g_signal_connect(disconnect_b, "clicked", G_CALLBACK(disconnect_button), NULL);
 	gtk_tooltips_set_tip(tooltips,
 			     disconnect_b,
 			     _("Disconnect from a baalue cluster node"),
@@ -191,7 +239,7 @@ build_button_box(void)
 
 	/* ---- reboot */
 	reboot_b = gtk_button_new_with_label(_("Reboot node"));
-//	g_signal_connect(reboot_b, "clicked", G_CALLBACK(update_button), NULL);
+	g_signal_connect(reboot_b, "clicked", G_CALLBACK(reboot_button), NULL);
 	gtk_tooltips_set_tip(tooltips,
 			     reboot_b,
 			     _("Reboot (and reconnect) baalue cluster node"),
@@ -200,7 +248,7 @@ build_button_box(void)
 
 	/* ---- halt */
 	halt_b = gtk_button_new_with_label(_("Shutdown node"));
-//	g_signal_connect(halt_b, "clicked", G_CALLBACK(download_button), NULL);
+	g_signal_connect(halt_b, "clicked", G_CALLBACK(halt_button), NULL);
 	gtk_tooltips_set_tip(tooltips,
 			     halt_b,
 			     _("Shutdown baalue cluster node"),

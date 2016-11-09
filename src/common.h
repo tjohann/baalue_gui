@@ -49,6 +49,21 @@ write_to_textfield(const char *message, int log_level);
 void *
 help(void *args);
 
+void *
+search_node(void *args);
+
+void *
+connect_node(void *args);
+
+void *
+disconnect_node(void *args);
+
+void *
+halt_node(void *args);
+
+void *
+reboot_node(void *args);
+
 
 /*
  * message_handler.c
