@@ -107,6 +107,8 @@ write_to_textfield(const char *message, int log_level)
 {
 	GtkTextIter iter;
 
+	printf("message: %s ... log_level %d\n", message, log_level);
+
 	if (textfield_buffer != NULL) {
 		switch(log_level) {
 		case LOG_INFO:
@@ -114,6 +116,7 @@ write_to_textfield(const char *message, int log_level)
 			gtk_text_buffer_get_end_iter(textfield_buffer, &iter);
 			gtk_text_buffer_insert(textfield_buffer, &iter, message, -1);
 			gdk_threads_leave();
+			break;
 		case LOG_ERR:
 			gdk_threads_enter();
 			gtk_text_buffer_get_end_iter(textfield_buffer, &iter);
@@ -147,13 +150,11 @@ write_to_textfield(const char *message, int log_level)
 static void
 help_button(GtkWidget *widget, gpointer data)
 {
-	PRINT_LOCATION();
-
 	(void) widget;
 	(void) data;
 
 	if (!g_thread_create(&help, NULL, FALSE, NULL) != 0)
-		write_error_msg(_("Can't create the thread"));
+		write_error_msg(_("could not create the thread"));
 }
 
 static void

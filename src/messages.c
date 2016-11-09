@@ -23,12 +23,12 @@
 static void
 message_common(int errno_flag, int log_level, const char *fmt, va_list va)
 {
-	char buf[MAXLINE + 1];
 	int errno_save = 0;
-
 	if (errno_flag)
 		errno_save = errno;
 
+	char buf[MAXLINE];
+	memset(buf, 0, MAXLINE);
 	vsnprintf(buf, MAXLINE, fmt, va);
 
 	size_t n = strlen(buf);

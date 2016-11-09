@@ -24,8 +24,6 @@
 void *
 help(void *args)
 {
-	BAA_PRINT_LOCATION();
-
 	(void) args;
 
 	write_info_msg(_("--INFO_MSG--: in help"));
