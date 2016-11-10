@@ -4,6 +4,16 @@
 
 
 #
+# -------------- 2016-11-10 ----------------------------------------------------
+#
+- ~/.config/baalue/baalue.conf
+- ~/.config/baalue/nodes.conf
+- /etc/baalue.conf
+- if no nodes.conf deactivate connect/disconnect,halt,reboot button
+
+
+
+#
 # -------------- 2016-10-18 ----------------------------------------------------
 #
 - implement first working functions:

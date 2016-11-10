@@ -27,6 +27,8 @@ help(void *args)
 	(void) args;
 
 	write_info_msg(_("in help"));
+	build_help_window();
+	sleep(60);
 
 	return NULL;
 }
@@ -38,6 +40,9 @@ search_node(void *args)
 
 	write_info_msg(_("in search"));
 
+	printf("GEDOEEENS\n");
+
+	sleep(60);
 	return NULL;
 }
 
@@ -47,16 +52,8 @@ connect_node(void *args)
 	(void) args;
 
 	write_info_msg(_("in connect"));
-
-	return NULL;
-}
-
-void *
-disconnect_node(void *args)
-{
-	(void) args;
-
-	write_info_msg(_("in disconnect"));
+	build_connect_window();
+	sleep(60);
 
 	return NULL;
 }
@@ -67,6 +64,8 @@ halt_node(void *args)
 	(void) args;
 
 	write_info_msg(_("in halt"));
+	build_halt_window();
+	sleep(60);
 
 	return NULL;
 }
@@ -77,6 +76,8 @@ reboot_node(void *args)
 	(void) args;
 
 	write_info_msg(_("in reboot"));
+	build_reboot_window();
+	sleep(60);
 
 	return NULL;
 }

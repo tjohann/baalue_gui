@@ -35,9 +35,9 @@ static GtkWidget *statusbar;
 static GtkWidget *buttonbox;
 static GtkWidget *search_b;
 static GtkWidget *connect_b;
-static GtkWidget *disconnect_b;
 static GtkWidget *reboot_b;
 static GtkWidget *halt_b;
+static GtkWidget *about_b;
 static GtkWidget *help_b;
 static GtkWidget *exit_b;
 
@@ -144,6 +144,49 @@ write_to_textfield(const char *message, int log_level)
 	}
 }
 
+void
+build_help_window(void)
+{
+	/* the help window */
+}
+
+void
+build_search_window(void)
+{
+	GtkWidget *search_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+	gtk_window_set_title (GTK_WINDOW (search_window), "TEST");
+	gtk_window_set_position(GTK_WINDOW(search_window), GTK_WIN_POS_CENTER);
+
+	GtkWidget *button = gtk_button_new_from_stock (GTK_STOCK_ADD);
+        gtk_container_set_border_width (GTK_CONTAINER (search_window), 25);
+        gtk_container_add (GTK_CONTAINER (search_window), button);
+
+	//   g_signal_connect (G_OBJECT (window), "destroy",
+	//                G_CALLBACK (on_window_destroy), app);
+
+	//   g_signal_connect (G_OBJECT (button), "clicked",
+	//                G_CALLBACK (on_add_button_clicked), app);
+
+	gtk_widget_show_all(search_window);
+}
+
+void
+build_connect_window(void)
+{
+	/* the connect window */
+}
+
+void
+build_halt_window(void)
+{
+	/* the halt window */
+}
+
+void
+build_reboot_window(void)
+{
+	/* the reboot window */
+}
 
 static void
 help_button(GtkWidget *widget, gpointer data)
@@ -161,6 +204,8 @@ search_button(GtkWidget *widget, gpointer data)
 	(void) widget;
 	(void) data;
 
+	build_search_window();
+
 	if (!g_thread_create(&search_node, NULL, FALSE, NULL) != 0)
 		write_error_msg(_("could not create the thread"));
 }
@@ -176,13 +221,12 @@ connect_button(GtkWidget *widget, gpointer data)
 }
 
 static void
-disconnect_button(GtkWidget *widget, gpointer data)
+about_button(GtkWidget *widget, gpointer data)
 {
 	(void) widget;
 	(void) data;
 
-	if (!g_thread_create(&disconnect_node, NULL, FALSE, NULL) != 0)
-		write_error_msg(_("could not create the thread"));
+	/* about dialog -> http://zetcode.com/gui/gtk2/gtkdialogs/*/
 }
 
 static void
@@ -211,7 +255,7 @@ build_button_box(void)
 	gtk_container_set_border_width(GTK_CONTAINER(buttonbox), 5);
 
 	/* ---- search */
-	search_b = gtk_button_new_with_label(_("Search for node"));
+	search_b = gtk_button_new_with_label(_("Search for nodes"));
 	g_signal_connect(search_b, "clicked", G_CALLBACK(search_button), NULL);
 	gtk_tooltips_set_tip(tooltips,
 			     search_b,
@@ -220,40 +264,41 @@ build_button_box(void)
 	gtk_container_add(GTK_CONTAINER(buttonbox), search_b);
 
 	/* ---- connect */
-	connect_b = gtk_button_new_with_label(_("Connect to node"));
+	connect_b = gtk_button_new_with_label(_("Connect node(s)"));
 	g_signal_connect(connect_b, "clicked", G_CALLBACK(connect_button), NULL);
 	gtk_tooltips_set_tip(tooltips,
 			     connect_b,
-			     _("Connect to a baalue cluster node"),
+			     _("Connect to a baalue cluster node(s)"),
 			     NULL);
 	gtk_container_add(GTK_CONTAINER(buttonbox), connect_b);
 
-	/* ---- disconnect */
-	disconnect_b = gtk_button_new_with_label(_("Disconnect node"));
-	g_signal_connect(disconnect_b, "clicked", G_CALLBACK(disconnect_button), NULL);
-	gtk_tooltips_set_tip(tooltips,
-			     disconnect_b,
-			     _("Disconnect from a baalue cluster node"),
-			     NULL);
-	gtk_container_add(GTK_CONTAINER(buttonbox), disconnect_b);
-
 	/* ---- reboot */
-	reboot_b = gtk_button_new_with_label(_("Reboot node"));
+	reboot_b = gtk_button_new_with_label(_("Reboot node(s)"));
 	g_signal_connect(reboot_b, "clicked", G_CALLBACK(reboot_button), NULL);
 	gtk_tooltips_set_tip(tooltips,
 			     reboot_b,
-			     _("Reboot (and reconnect) baalue cluster node"),
+			     _("Reboot (and reconnect) baalue cluster node(s)"),
 			     NULL);
 	gtk_container_add(GTK_CONTAINER(buttonbox), reboot_b);
 
 	/* ---- halt */
-	halt_b = gtk_button_new_with_label(_("Shutdown node"));
+	halt_b = gtk_button_new_with_label(_("Halt node(s)"));
 	g_signal_connect(halt_b, "clicked", G_CALLBACK(halt_button), NULL);
 	gtk_tooltips_set_tip(tooltips,
 			     halt_b,
-			     _("Shutdown baalue cluster node"),
+			     _("Halt baalue cluster node(s)"),
 			     NULL);
 	gtk_container_add(GTK_CONTAINER(buttonbox), halt_b);
+
+	/* ---- about */
+	about_b = gtk_button_new_with_label(_("About"));
+	g_signal_connect(about_b, "clicked", G_CALLBACK(about_button), NULL);
+	gtk_tooltips_set_tip(tooltips,
+			     about_b,
+			     _("About"),
+			     NULL);
+	gtk_container_add(GTK_CONTAINER(buttonbox), about_b);
+
 
 	/* ---- help */
 	help_b = gtk_button_new_with_label(_("Help"));
