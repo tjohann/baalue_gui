@@ -28,6 +28,7 @@
 #include "libservice.h"
 
 char *program_name;
+baalue_nodes_t *baalue_nodes;
 
 /*
  * gui.c
@@ -42,12 +43,6 @@ write_to_textfield(const char *message, int log_level);
 
 void
 build_help_window(void);
-
-void
-build_search_window(baalue_nodes_t *baalue_nodes);
-
-void
-build_connect_window(void);
 
 void
 build_halt_window(void);

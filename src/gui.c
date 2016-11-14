@@ -118,13 +118,10 @@ write_to_textfield(const char *message, int log_level)
 	if (textfield_buffer != NULL) {
 		switch(log_level) {
 		case LOG_INFO:
-			gdk_threads_enter();
 			gtk_text_buffer_get_end_iter(textfield_buffer, &iter);
 			gtk_text_buffer_insert(textfield_buffer, &iter, message, -1);
-			gdk_threads_leave();
 			break;
 		case LOG_ERR:
-			gdk_threads_enter();
 			gtk_text_buffer_get_end_iter(textfield_buffer, &iter);
 			gtk_text_buffer_insert_with_tags_by_name(textfield_buffer,
 								 &iter,
@@ -132,10 +129,8 @@ write_to_textfield(const char *message, int log_level)
 								 -1, "red", "bold",
 								 NULL);
 			gtk_text_buffer_insert(textfield_buffer, &iter, message, -1);
-			gdk_threads_leave();
 			break;
 		case LOG_DEBUG:
-			gdk_threads_enter();
 			gtk_text_buffer_get_end_iter(textfield_buffer, &iter);
 			gtk_text_buffer_insert_with_tags_by_name(textfield_buffer,
 								 &iter,
@@ -143,7 +138,6 @@ write_to_textfield(const char *message, int log_level)
 								 -1, "italic",
 								 NULL);
 			gtk_text_buffer_insert(textfield_buffer, &iter, message, -1);
-			gdk_threads_leave();
 		default:
 			baa_error_msg(_("ERROR: Message type not supported"));
 		}
@@ -158,8 +152,8 @@ build_help_window(void)
 	/* the help window */
 }
 
-void
-build_search_window(baalue_nodes_t *baalue_nodes)
+static void
+build_connect_window(baalue_nodes_t *baalue_nodes)
 {
 	GtkWidget *search_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	GtkWidget *array_of_cb[baalue_nodes->num_nodes];
@@ -185,12 +179,6 @@ build_search_window(baalue_nodes_t *baalue_nodes)
 	}
 
 	gtk_widget_show_all(search_window);
-}
-
-void
-build_connect_window(void)
-{
-	/* the connect window */
 }
 
 void
@@ -222,11 +210,15 @@ search_button(GtkWidget *widget, gpointer data)
 	(void) data;
 
 	/* broadcast to get active nodes */
-	baalue_nodes_t *baalue_nodes = get_active_baalue_nodes(); // TODO: search range
+	if (baalue_nodes != NULL) {
+		write_info_msg(_("clear old node config"));
+		free_baalue_nodes_instance(baalue_nodes);
+	}
+
+	baalue_nodes = get_active_baalue_nodes(); // TODO: search range
 	if (baalue_nodes == NULL)
 		write_error_msg(_("baalue_nodes == NULL"));
-	else
-		build_search_window(baalue_nodes);
+
 }
 
 static void
@@ -234,6 +226,8 @@ connect_button(GtkWidget *widget, gpointer data)
 {
 	(void) widget;
 	(void) data;
+
+	build_connect_window(baalue_nodes);
 
 	if (!g_thread_new("connect", &connect_node, NULL) != 0)
 		write_error_msg(_("could not create the thread"));

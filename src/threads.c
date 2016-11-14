@@ -39,8 +39,6 @@ connect_node(void *args)
 	(void) args;
 
 	write_info_msg(_("in connect"));
-	build_connect_window();
-	sleep(60);
 
 	return NULL;
 }
