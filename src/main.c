@@ -83,9 +83,6 @@ main(int argc, char *argv[])
 	/*
          * init gtk stuff
          */
-        if (!g_thread_supported())
-                g_thread_init(NULL);
-
         gdk_threads_init();
         gdk_threads_enter();
 

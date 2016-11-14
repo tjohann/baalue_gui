@@ -44,7 +44,7 @@ void
 build_help_window(void);
 
 void
-build_search_window(void);
+build_search_window(baalue_nodes_t *baalue_nodes);
 
 void
 build_connect_window(void);
@@ -63,9 +63,6 @@ build_reboot_window(void);
 
 void *
 help(void *args);
-
-void *
-search_node(void *args);
 
 void *
 connect_node(void *args);

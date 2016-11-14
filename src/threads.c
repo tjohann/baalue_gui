@@ -34,19 +34,6 @@ help(void *args)
 }
 
 void *
-search_node(void *args)
-{
-	(void) args;
-
-	write_info_msg(_("in search"));
-
-	printf("GEDOEEENS\n");
-
-	sleep(60);
-	return NULL;
-}
-
-void *
 connect_node(void *args)
 {
 	(void) args;

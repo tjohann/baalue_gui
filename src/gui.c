@@ -102,6 +102,14 @@ exit_function(GtkWidget *widget, gpointer data)
 	(void) data;
 }
 
+static void
+toggle_serch_window(GtkWidget *widget, gpointer data)
+{
+	baalue_node_t *i = data;
+
+	baa_info_msg(_("data: %s"), i->hostname);
+}
+
 void
 write_to_textfield(const char *message, int log_level)
 {
@@ -151,21 +159,30 @@ build_help_window(void)
 }
 
 void
-build_search_window(void)
+build_search_window(baalue_nodes_t *baalue_nodes)
 {
 	GtkWidget *search_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-	gtk_window_set_title (GTK_WINDOW (search_window), "TEST");
-	gtk_window_set_position(GTK_WINDOW(search_window), GTK_WIN_POS_CENTER);
+	GtkWidget *array_of_cb[baalue_nodes->num_nodes];
 
-	GtkWidget *button = gtk_button_new_from_stock (GTK_STOCK_ADD);
-        gtk_container_set_border_width (GTK_CONTAINER (search_window), 25);
-        gtk_container_add (GTK_CONTAINER (search_window), button);
+	GtkWidget *vbox_search = gtk_vbox_new(FALSE, 0);
+	gtk_container_add(GTK_CONTAINER(search_window), vbox_search);
+	gtk_container_set_border_width(GTK_CONTAINER(search_window), 15);
+	gtk_window_set_title(GTK_WINDOW(search_window), "Search devices/nodes");
 
-	//   g_signal_connect (G_OBJECT (window), "destroy",
-	//                G_CALLBACK (on_window_destroy), app);
+	int i = 0;
+	for (i = 0; i < baalue_nodes->num_nodes; i++) {
+		array_of_cb[i] = gtk_check_button_new_with_label(
+			baalue_nodes->array_of_nodes[i].hostname);
 
-	//   g_signal_connect (G_OBJECT (button), "clicked",
-	//                G_CALLBACK (on_add_button_clicked), app);
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(array_of_cb[i]), FALSE);
+
+		GTK_WIDGET_UNSET_FLAGS(array_of_cb[i], GTK_CAN_FOCUS);
+		gtk_box_pack_start(GTK_BOX(vbox_search), array_of_cb[i], TRUE, TRUE, 5);
+
+		g_signal_connect(array_of_cb[i], "clicked",
+				 G_CALLBACK(toggle_serch_window),
+				 (gpointer) &baalue_nodes->array_of_nodes[i]);
+	}
 
 	gtk_widget_show_all(search_window);
 }
@@ -194,7 +211,7 @@ help_button(GtkWidget *widget, gpointer data)
 	(void) widget;
 	(void) data;
 
-	if (!g_thread_create(&help, NULL, FALSE, NULL) != 0)
+	if (!g_thread_new("help", &help, NULL) != 0)
 		write_error_msg(_("could not create the thread"));
 }
 
@@ -204,10 +221,12 @@ search_button(GtkWidget *widget, gpointer data)
 	(void) widget;
 	(void) data;
 
-	build_search_window();
-
-	if (!g_thread_create(&search_node, NULL, FALSE, NULL) != 0)
-		write_error_msg(_("could not create the thread"));
+	/* broadcast to get active nodes */
+	baalue_nodes_t *baalue_nodes = get_active_baalue_nodes(); // TODO: search range
+	if (baalue_nodes == NULL)
+		write_error_msg(_("baalue_nodes == NULL"));
+	else
+		build_search_window(baalue_nodes);
 }
 
 static void
@@ -216,7 +235,7 @@ connect_button(GtkWidget *widget, gpointer data)
 	(void) widget;
 	(void) data;
 
-	if (!g_thread_create(&connect_node, NULL, FALSE, NULL) != 0)
+	if (!g_thread_new("connect", &connect_node, NULL) != 0)
 		write_error_msg(_("could not create the thread"));
 }
 
@@ -235,7 +254,7 @@ halt_button(GtkWidget *widget, gpointer data)
 	(void) widget;
 	(void) data;
 
-	if (!g_thread_create(&halt_node, NULL, FALSE, NULL) != 0)
+	if (!g_thread_new("halt", &halt_node, NULL) != 0)
 		write_error_msg(_("could not create the thread"));
 }
 
@@ -245,7 +264,7 @@ reboot_button(GtkWidget *widget, gpointer data)
 	(void) widget;
 	(void) data;
 
-	if (!g_thread_create(&reboot_node, NULL, FALSE, NULL) != 0)
+	if (!g_thread_new("reboot", &reboot_node, NULL) != 0)
 		write_error_msg(_("could not create the thread"));
 }
 

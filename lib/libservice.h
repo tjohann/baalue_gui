@@ -113,6 +113,16 @@
  * -------------
  */
 
+typedef struct {
+	char hostname[HOST_NAME_MAX + 1];
+	char ip_addr[HOST_NAME_MAX];  // TODO: as string?
+	int sfd;
+} baalue_node_t;
+
+typedef struct {
+	baalue_node_t *array_of_nodes;
+	unsigned short num_nodes; /* should be large enough */
+} baalue_nodes_t;
 
 
 /*
@@ -139,6 +149,18 @@
  */
 
 
+/*
+ * baalue.c
+ * ========
+ */
+baalue_nodes_t *
+get_active_baalue_nodes(void);
+
+void
+free_baalue_nodes_instance(baalue_nodes_t *baalue_nodes);
+
+int
+print_baalue_nodes_instance(baalue_nodes_t *baalue_nodes);
 
 
 #endif
