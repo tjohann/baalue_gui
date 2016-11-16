@@ -22,47 +22,41 @@
 
 
 void *
-help(void *args)
-{
-	(void) args;
-
-	write_info_msg(_("in help"));
-	build_help_window();
-	sleep(60);
-
-	return NULL;
-}
-
-void *
-connect_node(void *args)
-{
-	(void) args;
-
-	write_info_msg(_("in connect"));
-
-	return NULL;
-}
-
-void *
 halt_node(void *args)
 {
-	(void) args;
+       baalue_node_t *i = args;
 
-	write_info_msg(_("in halt"));
-	build_halt_window();
-	sleep(60);
+       write_info_msg(_("%s for %s"), __FUNCTION__, i->hostname);
 
-	return NULL;
+       return NULL;
 }
 
 void *
 reboot_node(void *args)
 {
-	(void) args;
+       baalue_node_t *i = args;
 
-	write_info_msg(_("in reboot"));
-	build_reboot_window();
-	sleep(60);
+       write_info_msg(_("%s for %s"), __FUNCTION__, i->hostname);
 
-	return NULL;
+       return NULL;
+}
+
+void *
+connect_node(void *args)
+{
+       baalue_node_t *i = args;
+
+       write_info_msg(_("%s for %s"), __FUNCTION__, i->hostname);
+
+       return NULL;
+}
+
+void *
+disconnect_node(void *args)
+{
+       baalue_node_t *i = args;
+
+       write_info_msg(_("%s for %s"), __FUNCTION__, i->hostname);
+
+       return NULL;
 }

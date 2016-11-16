@@ -41,15 +41,6 @@ build_main_window(void);
 void
 write_to_textfield(const char *message, int log_level);
 
-void
-build_help_window(void);
-
-void
-build_halt_window(void);
-
-void
-build_reboot_window(void);
-
 
 /*
  * threads.c
@@ -61,6 +52,9 @@ help(void *args);
 
 void *
 connect_node(void *args);
+
+void *
+disconnect_node(void *args);
 
 void *
 halt_node(void *args);

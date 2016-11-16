@@ -103,11 +103,51 @@ exit_function(GtkWidget *widget, gpointer data)
 }
 
 static void
-toggle_serch_window(GtkWidget *widget, gpointer data)
+toggle_connect_window(GtkWidget *widget, gpointer data)
 {
 	baalue_node_t *i = data;
 
-	baa_info_msg(_("data: %s"), i->hostname);
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget))) {
+		baa_info_msg(_("data: %s is active"), i->hostname);
+
+		if (!g_thread_new("connect", &connect_node, i) != 0)
+			write_error_msg(_("could not create the thread"));
+	} else {
+		baa_info_msg(_("data: %s is passiv"), i->hostname);
+
+		if (!g_thread_new("disconnect", &disconnect_node, i) != 0)
+			write_error_msg(_("could not create the thread"));
+	}
+}
+
+static void
+toggle_halt_window(GtkWidget *widget, gpointer data)
+{
+	baalue_node_t *i = data;
+
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget))) {
+		baa_info_msg(_("data: %s is active"), i->hostname);
+
+		if (!g_thread_new("halt", &halt_node, i) != 0)
+			write_error_msg(_("could not create the thread"));
+	} else {
+		baa_info_msg(_("data: %s is passiv"), i->hostname);
+	}
+}
+
+static void
+toggle_reboot_window(GtkWidget *widget, gpointer data)
+{
+	baalue_node_t *i = data;
+
+	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(widget))) {
+		baa_info_msg(_("data: %s is active"), i->hostname);
+
+		if (!g_thread_new("reboot", &reboot_node, i) != 0)
+			write_error_msg(_("could not create the thread"));
+	} else {
+		baa_info_msg(_("data: %s is passiv"), i->hostname);
+	}
 }
 
 void
@@ -146,22 +186,25 @@ write_to_textfield(const char *message, int log_level)
 	}
 }
 
-void
+static void
 build_help_window(void)
 {
 	/* the help window */
 }
 
 static void
-build_connect_window(baalue_nodes_t *baalue_nodes)
+build_connect_window(void)
 {
-	GtkWidget *search_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+	gtk_widget_set_sensitive(search_b, FALSE);
+
+	GtkWidget *connect_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	GtkWidget *array_of_cb[baalue_nodes->num_nodes];
 
-	GtkWidget *vbox_search = gtk_vbox_new(FALSE, 0);
-	gtk_container_add(GTK_CONTAINER(search_window), vbox_search);
-	gtk_container_set_border_width(GTK_CONTAINER(search_window), 15);
-	gtk_window_set_title(GTK_WINDOW(search_window), "Search devices/nodes");
+	GtkWidget *vbox_connect = gtk_vbox_new(FALSE, 0);
+	gtk_container_add(GTK_CONTAINER(connect_window), vbox_connect);
+	gtk_container_set_border_width(GTK_CONTAINER(connect_window), 15);
+	gtk_window_set_title(GTK_WINDOW(connect_window), "Connect nodes");
+	gtk_window_set_default_size(GTK_WINDOW(connect_window), 250, 200);
 
 	int i = 0;
 	for (i = 0; i < baalue_nodes->num_nodes; i++) {
@@ -171,26 +214,78 @@ build_connect_window(baalue_nodes_t *baalue_nodes)
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(array_of_cb[i]), FALSE);
 
 		GTK_WIDGET_UNSET_FLAGS(array_of_cb[i], GTK_CAN_FOCUS);
-		gtk_box_pack_start(GTK_BOX(vbox_search), array_of_cb[i], TRUE, TRUE, 5);
+		gtk_box_pack_start(GTK_BOX(vbox_connect), array_of_cb[i], TRUE, TRUE, 5);
 
 		g_signal_connect(array_of_cb[i], "clicked",
-				 G_CALLBACK(toggle_serch_window),
+				 G_CALLBACK(toggle_connect_window),
 				 (gpointer) &baalue_nodes->array_of_nodes[i]);
 	}
 
-	gtk_widget_show_all(search_window);
+	gtk_widget_show_all(connect_window);
 }
 
-void
+static void
 build_halt_window(void)
 {
-	/* the halt window */
+	gtk_widget_set_sensitive(search_b, FALSE);
+
+	GtkWidget *halt_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+	GtkWidget *array_of_cb[baalue_nodes->num_nodes];
+
+	GtkWidget *vbox_halt = gtk_vbox_new(FALSE, 0);
+	gtk_container_add(GTK_CONTAINER(halt_window), vbox_halt);
+	gtk_container_set_border_width(GTK_CONTAINER(halt_window), 15);
+	gtk_window_set_title(GTK_WINDOW(halt_window), "Halt nodes");
+	gtk_window_set_default_size(GTK_WINDOW(halt_window), 250, 200);
+
+	int i = 0;
+	for (i = 0; i < baalue_nodes->num_nodes; i++) {
+		array_of_cb[i] = gtk_check_button_new_with_label(
+			baalue_nodes->array_of_nodes[i].hostname);
+
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(array_of_cb[i]), FALSE);
+
+		GTK_WIDGET_UNSET_FLAGS(array_of_cb[i], GTK_CAN_FOCUS);
+		gtk_box_pack_start(GTK_BOX(vbox_halt), array_of_cb[i], TRUE, TRUE, 5);
+
+		g_signal_connect(array_of_cb[i], "clicked",
+				 G_CALLBACK(toggle_halt_window),
+				 (gpointer) &baalue_nodes->array_of_nodes[i]);
+	}
+
+	gtk_widget_show_all(halt_window);
 }
 
-void
+static void
 build_reboot_window(void)
 {
-	/* the reboot window */
+	gtk_widget_set_sensitive(search_b, FALSE);
+
+	GtkWidget *reboot_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+	GtkWidget *array_of_cb[baalue_nodes->num_nodes];
+
+	GtkWidget *vbox_reboot = gtk_vbox_new(FALSE, 0);
+	gtk_container_add(GTK_CONTAINER(reboot_window), vbox_reboot);
+	gtk_container_set_border_width(GTK_CONTAINER(reboot_window), 15);
+	gtk_window_set_title(GTK_WINDOW(reboot_window), "Reboot nodes");
+	gtk_window_set_default_size(GTK_WINDOW(reboot_window), 250, 200);
+
+	int i = 0;
+	for (i = 0; i < baalue_nodes->num_nodes; i++) {
+		array_of_cb[i] = gtk_check_button_new_with_label(
+			baalue_nodes->array_of_nodes[i].hostname);
+
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(array_of_cb[i]), FALSE);
+
+		GTK_WIDGET_UNSET_FLAGS(array_of_cb[i], GTK_CAN_FOCUS);
+		gtk_box_pack_start(GTK_BOX(vbox_reboot), array_of_cb[i], TRUE, TRUE, 5);
+
+		g_signal_connect(array_of_cb[i], "clicked",
+				 G_CALLBACK(toggle_reboot_window),
+				 (gpointer) &baalue_nodes->array_of_nodes[i]);
+	}
+
+	gtk_widget_show_all(reboot_window);
 }
 
 static void
@@ -199,8 +294,7 @@ help_button(GtkWidget *widget, gpointer data)
 	(void) widget;
 	(void) data;
 
-	if (!g_thread_new("help", &help, NULL) != 0)
-		write_error_msg(_("could not create the thread"));
+	build_help_window();
 }
 
 static void
@@ -216,9 +310,13 @@ search_button(GtkWidget *widget, gpointer data)
 	}
 
 	baalue_nodes = get_active_baalue_nodes(); // TODO: search range
-	if (baalue_nodes == NULL)
+	if (baalue_nodes == NULL) {
 		write_error_msg(_("baalue_nodes == NULL"));
-
+	} else {
+		gtk_widget_set_sensitive(connect_b, TRUE);
+		gtk_widget_set_sensitive(halt_b, TRUE);
+		gtk_widget_set_sensitive(reboot_b, TRUE);
+	}
 }
 
 static void
@@ -227,10 +325,12 @@ connect_button(GtkWidget *widget, gpointer data)
 	(void) widget;
 	(void) data;
 
-	build_connect_window(baalue_nodes);
-
-	if (!g_thread_new("connect", &connect_node, NULL) != 0)
-		write_error_msg(_("could not create the thread"));
+	if (baalue_nodes != NULL) {
+		build_connect_window();
+	} else {
+		write_error_msg(_("baalue_nodes == NULL"));
+		gtk_widget_set_sensitive(connect_b, FALSE);
+	}
 }
 
 static void
@@ -248,8 +348,12 @@ halt_button(GtkWidget *widget, gpointer data)
 	(void) widget;
 	(void) data;
 
-	if (!g_thread_new("halt", &halt_node, NULL) != 0)
-		write_error_msg(_("could not create the thread"));
+	if (baalue_nodes != NULL) {
+		build_halt_window();
+	} else {
+		write_error_msg(_("baalue_nodes == NULL"));
+		gtk_widget_set_sensitive(halt_b, FALSE);
+	}
 }
 
 static void
@@ -258,8 +362,12 @@ reboot_button(GtkWidget *widget, gpointer data)
 	(void) widget;
 	(void) data;
 
-	if (!g_thread_new("reboot", &reboot_node, NULL) != 0)
-		write_error_msg(_("could not create the thread"));
+	if (baalue_nodes != NULL) {
+		build_reboot_window();
+	} else {
+		write_error_msg(_("baalue_nodes == NULL"));
+		gtk_widget_set_sensitive(reboot_b, FALSE);
+	}
 }
 
 static void
