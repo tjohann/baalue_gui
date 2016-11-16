@@ -2,7 +2,7 @@
 # configure.ac
 #
 
-AC_INIT([baalue], [trunk], [thorsten.johannvorderbrueggen@t-online.de])
+AC_INIT([baalue_gui], [trunk], [thorsten.johannvorderbrueggen@t-online.de])
 AC_COPYRIGHT([Copyright 2016, Thorsten Johannvorderbrueggen])
 
 AC_CONFIG_AUX_DIR([build-aux/autoconf])

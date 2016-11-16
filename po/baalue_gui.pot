@@ -1,21 +1,21 @@
-# German translations for baalue package.
-# Copyright (C) 2016 Thorsten Johannvorderbrueggen
-# This file is distributed under the same license as the baalue package.
-# tjohann <thorsten.johannvorderbrueggen@t-online.de>, 2016.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Thorsten Johannvorderbrueggen
+# This file is distributed under the same license as the baalue_gui package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: baalue trunk\n"
+"Project-Id-Version: baalue_gui trunk\n"
 "Report-Msgid-Bugs-To: thorsten.johannvorderbrueggen@t-online.de\n"
 "POT-Creation-Date: 2016-11-16 17:18+0100\n"
-"PO-Revision-Date: 2016-07-20 10:56+0200\n"
-"Last-Translator: tjohann <thorsten.johannvorderbrueggen@t-online.de>\n"
-"Language-Team: German\n"
-"Language: de\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ASCII\n"
+"Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/main.c:32
 #, c-format
